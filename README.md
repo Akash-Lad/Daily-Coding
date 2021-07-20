@@ -1,4 +1,4 @@
-# DSA-Coding-Problems for FAANG
+# DSA-Coding-Problems
 
 GFG Frequently asked Questions
 
