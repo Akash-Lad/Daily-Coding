@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class DP {
 
     // Recursion of 0-1 knapsack problem
@@ -143,6 +145,48 @@ public class DP {
 
     }
 
+    // Subset Sum with minimum difference
+
+    public static int subsetSumWithMinimumDifference(int arr[], int n) {
+
+        int sum = 0;
+        for (int x : arr)
+            sum += x;
+
+        boolean[][] dp = new boolean[n + 1][sum + 1];
+
+        for (int i = 0; i < n + 1; i++)
+            dp[i][0] = true;
+
+        for (int j = 1; j < sum + 1; j++)
+            dp[0][j] = false;
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < sum + 1; j++) {
+                // wt[n-1]<=w
+                // val[n-1] + dp[i-1][j-wt[i-1]]
+
+                if (arr[i - 1] <= j) {
+                    dp[i][j] = dp[i - 1][j - arr[i - 1]] || dp[i - 1][j];
+                } else if (arr[i - 1] > j) {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        int min = Integer.MAX_VALUE;
+
+        for (int i = sum / 2; i >= 0; i--) {
+            if (dp[n][i] == true) {
+                min = Math.min(min, sum - 2 * i);
+                break;
+            }
+        }
+
+        return min;
+
+    }
+
     // Greedy min number of coins
 
     public static int coinNumber(int val) {
@@ -167,9 +211,9 @@ public class DP {
 
     public static void main(String args[]) {
 
-        int arr[] = { 1, 1, 1, 1 };
+        int arr[] = { 1, 2 };
         int k = 1;
-        System.out.println(countOfSubsetOfGivenSum(arr, k));
+        System.out.println(subsetSumWithMinimumDifference(arr, k));
 
     }
 
