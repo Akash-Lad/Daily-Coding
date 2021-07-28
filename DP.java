@@ -2,6 +2,192 @@
 
 public class DP {
 
+    // Nth Fibonacci Number
+
+    public static int Fibonacci(int n) {
+
+        int[] dp = new int[n + 1];
+
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[n];
+
+    }
+
+    // Nth Catalan Number
+
+    public static int CatalanNumber(int n) {
+
+        int res = 0;
+
+        if (n <= 1)
+            return 1;
+
+        for (int i = 0; i < n; i++) {
+            res += CatalanNumber(i) * CatalanNumber(n - i - 1);
+        }
+
+        return res;
+    }
+
+    // Number of ways to represent N
+
+    public static int Nways(int n) {
+
+        int[] arr = new int[n - 1];
+        int m = n - 1;
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i + 1;
+        }
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 0; i < m + 1; i++)
+            dp[i][0] = 1;
+
+        for (int i = 1; i < n + 1; i++)
+            dp[0][i] = 0;
+
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+
+                if (arr[i - 1] <= j) {
+                    dp[i][j] = dp[i][j - arr[i - 1]] + dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+
+            }
+        }
+
+        return dp[m][n];
+
+    }
+
+    // Count ways to reach Nth stair
+
+    public static int Nways_stair(int n) {
+
+        /*****************************************************/
+        /*
+         * RECURSIVE CODE
+         * 
+         * if (n <= 1) return n;
+         * 
+         * return Nways_stair(n - 1) + Nways_stair(n - 2);
+         *****************************************************/
+        int[] dp = new int[n + 1];
+
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[n];
+    }
+
+    // Count number of hops
+
+    public static int Nhops(int n) {
+
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        dp[2] = 2;
+
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+        }
+
+        return dp[n];
+
+    }
+
+    // Reach a given score
+    // points: [3, 5, 10]
+    // n = 20
+    // output = 4
+
+    public static int reach_given_score(int n) {
+
+        int points[] = { 3, 5, 10 };
+        int m = points.length;
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 0; i < m + 1; i++)
+            dp[i][0] = 1;
+
+        for (int j = 1; j < n + 1; j++)
+            dp[0][j] = 0;
+
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+
+                if (points[i - 1] <= j) {
+                    dp[i][j] = dp[i][j - points[i - 1]] + dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        return dp[m][n];
+
+    }
+
+    // Minimum number of jumps
+
+    public static int minJumps(int[] arr, int low, int high) {
+
+        if (low == high)
+            return 0;
+
+        if (arr[low] == 0)
+            return Integer.MAX_VALUE;
+
+        int min = Integer.MAX_VALUE;
+
+        for (int i = low + 1; i <= high && i <= low + arr[low]; i++) {
+            int jumps = minJumps(arr, i, high);
+            if (jumps != Integer.MAX_VALUE && jumps + 1 < min) {
+                min = jumps + 1;
+            }
+        }
+
+        return min;
+
+    }
+
+    public static void min_jumps() {
+
+        int arr[] = { 1, 3, 6, 3, 2, 3, 6, 8, 9, 5 };
+        int n = arr.length;
+
+        System.out.println(minJumps(arr, 0, n - 1));
+    }
+
+    // Unique BST's
+
+    // Sum of all substring of numbers
+
+    // Maximum subarray by removing atmost one element
+
+    // Number of unique paths
+
+    // Maximize the cut segments
+
+    // Optimal strategy for a game
+
+    // Egg dropping problem
+
     // Recursion of 0-1 knapsack problem
 
     public static int knapsack(int wt[], int[] val, int w, int n) {
@@ -379,6 +565,66 @@ public class DP {
 
     }
 
+    // Longest Common Subsequence
+
+    public static int LCS(char[] X, char[] Y, int n, int m) {
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        for (int i = 0; i < n + 1; i++) {
+            for (int j = 0; j < m + 1; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+
+                if (X[i - 1] == Y[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+
+    }
+
+    // Longest Common Substring
+
+    public static int LCSubstring(char[] X, char[] Y, int n, int m) {
+
+        int[][] dp = new int[n + 1][m + 1];
+        int result = Integer.MIN_VALUE;
+
+        for (int i = 0; i < n + 1; i++) {
+            for (int j = 0; j < m + 1; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+
+                if (X[i - 1] == Y[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                    result = Math.max(result, dp[i][j]);
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        return result;
+
+    }
+
     // Greedy min number of coins
 
     public static int coinNumber(int val) {
@@ -403,10 +649,7 @@ public class DP {
 
     public static void main(String args[]) {
 
-        int arr[] = new int[] { 1, 5, 8, 9, 10, 17, 17, 20 };
-        int size = arr.length;
-
-        System.out.println(cutRod(size, arr));
+        min_jumps();
 
     }
 
