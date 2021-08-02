@@ -1,4 +1,4 @@
-//import java.util.*;
+import java.util.*;
 
 public class DP {
 
@@ -625,6 +625,65 @@ public class DP {
 
     }
 
+    public static void printLCS(String X, String Y, int m, int n) {
+
+        Stack<Character> st = new Stack<>();
+        char[] x = X.toCharArray();
+        char[] y = Y.toCharArray();
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 0; i < m + 1; i++) {
+            for (int j = 0; j < n + 1; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+
+                if (x[i - 1] == y[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        int i = m, j = n;
+
+        while (i > 0 && j > 0) {
+
+            if (x[i - 1] == y[j - 1]) {
+                st.push(x[i - 1]);
+                i--;
+                j--;
+            } else {
+                if (dp[i][j - 1] > dp[i - 1][j]) {
+                    st.push(x[i - 1]);
+                    j--;
+                } else {
+                    i--;
+                }
+            }
+
+        }
+
+        String ans = "";
+
+        while (st.isEmpty()) {
+
+            char t = st.peek();
+            System.out.println(t);
+            ans += t;
+            st.pop();
+        }
+
+        System.out.println(ans);
+    }
+
     // Greedy min number of coins
 
     public static int coinNumber(int val) {
@@ -649,7 +708,7 @@ public class DP {
 
     public static void main(String args[]) {
 
-        min_jumps();
+        printLCS("abcdgh", "abedfha", 6, 7);
 
     }
 

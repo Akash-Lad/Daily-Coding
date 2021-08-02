@@ -1,4 +1,4 @@
-# Dynamic Programming
+# Dynamic Programming - 35 Questions
 
 ## Generic Questions
 
